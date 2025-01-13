@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile Page</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+<header>
+    <h1>Welcome to Your Profile</h1>
+</header>
+<main>
+    <!-- Отображение данных пользователя -->
+    <section>
+        <h2>Profile Information</h2>
+        <div th:if="${user == null}">
+            <p>User data not available</p>
+        </div>
+        <div th:if="${user != null}">
+            <p><strong>Username:</strong> <span th:text="${user.username}">default username</span></p>
+            <p><strong>Email:</strong> <span th:text="${user.email}">default email</span></p>
+        </div>
+    </section>
+
+    <!-- Форма для обновления данных -->
+    <section th:if="${user != null}">
+        <h2>Update Profile</h2>
+        <form th:action="@{/profile}" method="post">
+            <input type="hidden" name="_method" value="put" />
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+            <div>
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" th:value="${user?.username}" required>
+            </div>
+            <div>
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" th:value="${user?.email}" required>
+            </div>
+            <button type="submit">Update</button>
+        </form>
+    </section>
+
+</main>
+<footer>
+    <p>&copy; 2025 ReadMate</p>
+</footer>
+</body>
+</html>

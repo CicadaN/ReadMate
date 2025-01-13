@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Авторизация</title>
+</head>
+<body>
+<div>
+    <h2>Авторизация</h2>
+    <form id="loginForm" th:action="@{/login}" method="post">
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+        <div class="mb-3">
+            <label for="username" class="form-label">Имя пользователя</label>
+            <input type="text" class="form-control" id="username" name="username" required>
+        </div>
+        <div class="mb-3">
+            <label for="password" class="form-label">Пароль</label>
+            <input type="password" class="form-control" id="password" name="password" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Войти</button>
+    </form>
+
+    <div id="errorMessage" style="color: red; display: none;"></div>
+    <div id="successMessage" style="color: green; display: none;"></div>
+</div>
+
+<script>
+    document.getElementById('loginForm').addEventListener('submit', async function (event) {
+        event.preventDefault(); // Остановить стандартное отправление формы
+
+        const form = event.target;
+        const formData = new FormData(form);
+
+        try {
+            const response = await fetch(form.action, {
+                method: form.method,
+                headers: {
+                    'Accept': 'application/json'
+                },
+                body: formData
+            });
+
+            const result = await response.json();
+
+            if (response.ok) {
+                // Успешный логин, редирект на страницу профиля
+                window.location.href = result.redirectUrl;
+            } else {
+                // Ошибка логина, показать сообщение об ошибке
+                document.getElementById('errorMessage').textContent = result.error || 'Ошибка авторизации';
+                document.getElementById('errorMessage').style.display = 'block';
+                document.getElementById('successMessage').style.display = 'none';
+            }
+        } catch (error) {
+            console.error('Ошибка:', error);
+            document.getElementById('errorMessage').textContent = 'Произошла ошибка при отправке запроса';
+            document.getElementById('errorMessage').style.display = 'block';
+            document.getElementById('successMessage').style.display = 'none';
+        }
+    });
+</script>
+</body>
+</html>
