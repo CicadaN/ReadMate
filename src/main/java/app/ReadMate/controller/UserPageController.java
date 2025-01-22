@@ -34,7 +34,9 @@ public class UserPageController {
         log.info("User data: {}", userResponseDto);
 
         model.addAttribute("user", userResponseDto);
-        return "profile";
+        model.addAttribute("title", "Мой профиль");
+        model.addAttribute("childTemplate", "profile");
+        return "layout";
     }
 
     @PutMapping("/profile")

@@ -49,7 +49,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@ModelAttribute @Valid UserRequestDto userRequestDto) {
+    public void login(@ModelAttribute @Valid UserRequestDto userRequestDto, HttpServletRequest request, HttpServletResponse response) throws IOException {
         try {
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
@@ -61,13 +61,15 @@ public class AuthController {
             context.setAuthentication(authentication);
             SecurityContextHolder.setContext(context);
 
-            return ResponseEntity.ok(Map.of("message", "Login successful", "redirectUrl", "/profile"));
+            HttpSession session = request.getSession(true);
+            session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, context);
+
+            // Редирект на страницу профиля
+            response.sendRedirect("/profile");
         } catch (BadCredentialsException e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                    .body(Map.of("error", "Invalid username or password"));
+            response.sendRedirect("/login?error=true");
         }
     }
-
 
     @PostMapping("/logout")
     public ResponseEntity<?> logout(HttpServletRequest request, HttpServletResponse response) {

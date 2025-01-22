@@ -11,27 +11,31 @@ import org.springframework.web.bind.annotation.GetMapping;
 @AllArgsConstructor
 public class PageController {
 
+
     @GetMapping("/")
-    public String indexPage() { return "index"; // Шаблон index.html
+    public String showHomePage(Model model) {
+        model.addAttribute("childTemplate", "index");
+        model.addAttribute("title", "Добро пожаловать на ReadMate");
+        return "layout"; // <--- возвращаем "layout"
     }
 
     @GetMapping("/register")
-    public String registerPage() { return "register"; // Шаблон register.html
-    }
-
-    @GetMapping("/welcome")
-    public String welcomePage() { return "welcome"; // Шаблон welcome.html
+    public String registerPage(Model model) {
+        model.addAttribute("childTemplate", "register");
+        model.addAttribute("title", "Регистрация");
+        return "layout"; // <--- возвращаем "layout"
     }
 
     @GetMapping("/login")
     public String loginPage(Model model, HttpServletRequest request) {
         CsrfToken csrfToken = (CsrfToken) request.getAttribute(CsrfToken.class.getName());
         if (csrfToken != null) {
-            System.out.println("CSRF Token in controller: " + csrfToken.getToken());
             model.addAttribute("_csrf", csrfToken);
-        } else {
-            System.out.println("CSRF Token in controller: null");
         }
-        return "login";
+
+        model.addAttribute("childTemplate", "login");
+        model.addAttribute("title", "Страница входа");
+        return "layout";
     }
+
 }

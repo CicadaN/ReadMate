@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title th:text="${title}">Books</title>
+</head>
+<body>
+<div th:fragment="childContent">
+    <h2>Список книг</h2>
+
+    <!-- Пример отображения в таблице -->
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Название</th>
+            <th>Автор</th>
+            <th>Издатель</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <!-- books - список BookRequestDTO,
+             each book : ${books} -->
+        <tr th:each="book : ${books}">
+            <td th:text="${book.title}">Название</td>
+            <td th:text="${book.author}">Автор</td>
+            <td th:text="${book.publisher}">Издатель</td>
+            <!-- Ссылка на детальную страницу -->
+            <td>
+                <a class="btn btn-primary"
+                   th:href="@{/books-page/{id}(id=${book.id})}">
+                    Подробнее
+                </a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

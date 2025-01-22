@@ -1,11 +1,35 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Главная</title>
+    <meta charset="UTF-8" />
+    <title th:text="${title}">Главная</title>
 </head>
 <body>
-<h1>Главная страница</h1>
-<a th:href="@{/login}">Авторизация</a>
-<a th:href="@{/register}">Регистрация</a>
+<div th:fragment="childContent">
+    <!-- Карточка с описанием проекта -->
+    <div class="card p-4 shadow">
+        <h2 class="mb-3">Добро пожаловать на ReadMate!</h2>
+        <p>
+            ReadMate — это современное веб-приложение, помогающее любителям книг
+            искать, хранить и обсуждать любимые произведения.
+        </p>
+        <p>
+            У нас вы сможете:
+        </p>
+        <ul>
+            <li>Добавлять свои книги, искать новые и делиться впечатлениями</li>
+            <li>Сохранять заметки, менять настройки профиля и многое другое</li>
+        </ul>
+        <p>
+            Проект находится в активной разработке, и вскоре появится больше интересных функций!
+        </p>
+        <hr>
+        <p class="text-muted">
+            Если вы уже зарегистрированы, авторизуйтесь, чтобы получить полный доступ к вашему профилю.
+        </p>
+        <a class="btn btn-primary" th:href="@{/register}">Зарегистрироваться</a>
+        <a class="btn btn-secondary" th:href="@{/login}">Войти</a>
+    </div>
+</div>
 </body>
 </html>

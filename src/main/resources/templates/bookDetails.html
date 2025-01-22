@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title th:text="${title}">Книга</title>
+</head>
+<body>
+<div th:fragment="childContent">
+    <h2 th:text="${book.title}">Название книги</h2>
+
+    <p><strong>Автор:</strong> <span th:text="${book.author}">Имя автора</span></p>
+    <p><strong>ISBN:</strong> <span th:text="${book.isbn}"></span></p>
+    <p><strong>Жанр:</strong> <span th:text="${book.genre}"></span></p>
+    <p><strong>Описание:</strong> <span th:text="${book.description}"></span></p>
+    <p><strong>Год публикации:</strong> <span th:text="${book.publicationYear}"></span></p>
+    <p><strong>Издатель:</strong> <span th:text="${book.publisher}"></span></p>
+    <p><strong>Страниц:</strong> <span th:text="${book.pages}"></span></p>
+
+    <!-- Кнопка "Назад" -->
+    <a class="btn btn-secondary" th:href="@{/books-page}">
+        Вернуться к списку
+    </a>
+</div>
+</body>
+</html>

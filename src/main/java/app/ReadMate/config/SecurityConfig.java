@@ -1,6 +1,7 @@
 package app.ReadMate.config;
 
 import app.ReadMate.service.CustomUserDetailsService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
@@ -19,6 +20,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
+import org.springframework.security.web.csrf.CsrfFilter;
+import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.OrRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
@@ -48,34 +51,84 @@ public class SecurityConfig {
             new AntPathRequestMatcher("/api-docs/**"),
             new AntPathRequestMatcher("/proxy/**"),
             new AntPathRequestMatcher("/assets/**"),
+            new AntPathRequestMatcher("/static/css/**"),
             new AntPathRequestMatcher("/css/**")
     );
 
+//    @Bean
+//    public SecurityFilterChain SecurityFilterChain(HttpSecurity http) throws Exception {
+//        return http
+//                .securityContext(securityContext -> securityContext
+//                        .securityContextRepository(new HttpSessionSecurityContextRepository())) // Сохранение контекста в сессии
+//                .cors(AbstractHttpConfigurer::disable)
+//                .csrf(csrf -> csrf.ignoringRequestMatchers(PUBLIC_URLS)
+//                        .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+//                )
+//
+//                .addFilterAfter((request, response, chain) -> {
+//                    CsrfToken csrfToken = (CsrfToken) request.getAttribute(CsrfToken.class.getName());
+//                    System.out.println("CSRF Token: " + (csrfToken != null ? csrfToken.getToken() : "null"));
+//
+//                    // Логируем все атрибуты
+//                    request.getAttributeNames().asIterator().forEachRemaining(attr ->
+//                            System.out.println(attr + ": " + request.getAttribute(attr))
+//                    );
+//
+//                    chain.doFilter(request, response);
+//                }, CsrfFilter.class)
+//
+//
+//                .authorizeHttpRequests(auth -> auth
+//                        .requestMatchers(PUBLIC_URLS).permitAll()
+//                        .anyRequest().authenticated())
+//                .formLogin(AbstractHttpConfigurer::disable)
+//                .logout(AbstractHttpConfigurer::disable)
+//
+////                .formLogin(form -> form
+////                        .loginPage("/login")
+////                        .loginProcessingUrl("/login")
+////                        .defaultSuccessUrl("/", true)
+////                        .failureUrl("/login?error=true")
+////                        .permitAll())
+////                .logout(logout -> logout
+////                        .logoutUrl("/logout")
+////                        .logoutSuccessUrl("/login?logout=true")
+////                        .invalidateHttpSession(true)
+////                        .deleteCookies("JSESSIONID")
+////                        .permitAll())
+//                .exceptionHandling(exceptions -> exceptions
+//                        .accessDeniedHandler((request, response, accessDeniedException) -> {
+//                            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+//                            response.getWriter().write("Access Denied");
+//                        })
+//                        .authenticationEntryPoint((request, response, authException) -> {
+//                            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+//                            response.getWriter().write("Authentication Required");
+//                        }))
+////                .sessionManagement(session -> session
+////                        .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))
+//                .sessionManagement(session -> session
+//                        .sessionCreationPolicy(SessionCreationPolicy.ALWAYS))
+//                .build();
+//    }
+
     @Bean
-    public SecurityFilterChain SecurityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .securityContext(securityContext -> securityContext
-                        .securityContextRepository(new HttpSessionSecurityContextRepository())) // Сохранение контекста в сессии
+                        .securityContextRepository(new HttpSessionSecurityContextRepository()))
                 .cors(AbstractHttpConfigurer::disable)
-                .csrf(csrf -> csrf.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()))
+                .csrf(csrf -> csrf
+                        .ignoringRequestMatchers(PUBLIC_URLS)
+                        .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+                )
+
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(PUBLIC_URLS).permitAll()
-                        .anyRequest().authenticated())
+                        .anyRequest().authenticated()
+                )
                 .formLogin(AbstractHttpConfigurer::disable)
                 .logout(AbstractHttpConfigurer::disable)
-
-//                .formLogin(form -> form
-//                        .loginPage("/login")
-//                        .loginProcessingUrl("/login")
-//                        .defaultSuccessUrl("/", true)
-//                        .failureUrl("/login?error=true")
-//                        .permitAll())
-//                .logout(logout -> logout
-//                        .logoutUrl("/logout")
-//                        .logoutSuccessUrl("/login?logout=true")
-//                        .invalidateHttpSession(true)
-//                        .deleteCookies("JSESSIONID")
-//                        .permitAll())
                 .exceptionHandling(exceptions -> exceptions
                         .accessDeniedHandler((request, response, accessDeniedException) -> {
                             response.setStatus(HttpServletResponse.SC_FORBIDDEN);
@@ -85,12 +138,11 @@ public class SecurityConfig {
                             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                             response.getWriter().write("Authentication Required");
                         }))
-//                .sessionManagement(session -> session
-//                        .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.ALWAYS))
                 .build();
     }
+
     @Bean
     public FilterRegistrationBean<HiddenHttpMethodFilter> hiddenHttpMethodFilter() {
         FilterRegistrationBean<HiddenHttpMethodFilter> filter = new FilterRegistrationBean<>(new HiddenHttpMethodFilter());

@@ -5,8 +5,7 @@ import lombok.Data;
 // для ответа клиенту
 @Data
 public class UserResponseDto {
-    private long id;
+    private Long id;
     private String username;
     private String email;
 }
-
