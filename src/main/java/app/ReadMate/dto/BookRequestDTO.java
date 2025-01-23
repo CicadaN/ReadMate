@@ -24,7 +24,6 @@ public class BookRequestDTO {
     @Positive(message = "Количество страниц должно быть положительным числом")
     private Integer pages;
 
-
     @NotBlank
     @Size(max = 30, message = "Жанр не должен превышать 30 символов")
     private String genre;
@@ -35,6 +34,5 @@ public class BookRequestDTO {
 
     @Min(value = 1440, message = "Год публикации должен быть не раньше 1440 года")
     private Integer publicationYear;
-
 
 }
