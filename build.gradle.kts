@@ -4,10 +4,10 @@ plugins {
 	id("io.spring.dependency-management") version "1.1.6"
 	id("gg.jte.gradle") version "3.1.12"
 
-	// Lombok-плагин (сам выставит compileOnly, annotationProcessor и т.д.)
 	id("io.freefair.lombok") version "8.12"
 
-	// Просто плагин java (или kotlin-jvm, если проект на Kotlin)
+	id ("jacoco")
+
 	java
 }
 
@@ -27,7 +27,6 @@ repositories {
 dependencies {
 	// ===== SPRING BOOT STARTERS =====
 	implementation("org.springframework.boot:spring-boot-starter-web")
-	implementation("org.springframework.boot:spring-boot-starter-data-jdbc")
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 	implementation("org.springframework.boot:spring-boot-starter-oauth2-authorization-server")
 	implementation("org.springframework.boot:spring-boot-starter-oauth2-client")
@@ -68,4 +67,18 @@ jte {
 
 tasks.withType<Test> {
 	useJUnitPlatform()
+}
+
+tasks.test {
+	useJUnitPlatform()
+	finalizedBy(tasks.jacocoTestReport)
+}
+
+tasks.jacocoTestReport {
+	dependsOn(tasks.test)
+	reports {
+		xml.required.set(true)
+		csv.required.set(false)
+		html.required.set(true)
+	}
 }

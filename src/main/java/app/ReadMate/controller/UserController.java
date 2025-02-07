@@ -42,4 +42,11 @@ public class UserController {
         userService.deleteById(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
+    @PostMapping("/api/users")
+    public ResponseEntity<UserResponseDto> saveUser(@RequestBody @Valid UserRequestDto userDto) {
+        System.out.println("Received User DTO: " + userDto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(userService.save(userDto));
+    }
+
 }

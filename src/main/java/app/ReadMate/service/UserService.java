@@ -39,6 +39,7 @@ public class UserService {
         User user = userMapper.toEntity(userRequestDto);
         System.out.println("Raw password before encoding: " + user.getPassword());
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setAge(userRequestDto.getAge());
         userRepository.save(user);
         return userMapper.toDto(user);
     }
@@ -55,6 +56,7 @@ public class UserService {
         }
         user.setEmail(userUpdateDto.getEmail());
         user.setUsername(userUpdateDto.getUsername());
+        user.setAge(userUpdateDto.getAge());
         try {
             userRepository.save(user);
         } catch (DataIntegrityViolationException e) {

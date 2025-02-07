@@ -1,8 +1,7 @@
 package app.ReadMate.dto;
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.validation.constraints.*;
 import lombok.Data;
 
 @Data
@@ -14,4 +13,9 @@ public class UserUpdateDto {
     @Email
     @NotBlank
     private String email;
+
+    @NotNull
+    @Min(10)
+    @Max(120)
+    private Integer age;
 }
