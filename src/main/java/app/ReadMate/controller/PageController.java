@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 @AllArgsConstructor
 public class PageController {
 
-
     @GetMapping("/")
     public String showHomePage(Model model) {
         model.addAttribute("childTemplate", "index");

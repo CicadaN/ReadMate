@@ -1,7 +1,6 @@
 package app.ReadMate.controller;
 
 import app.ReadMate.dto.BookRequestDTO;
-import app.ReadMate.mapper.BookMapper;
 import app.ReadMate.model.Book;
 import app.ReadMate.service.BookService;
 import jakarta.validation.Valid;

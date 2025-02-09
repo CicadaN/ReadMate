@@ -2,7 +2,6 @@ package app.ReadMate.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.*;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -26,6 +25,6 @@ public class UserRequestDto {
     @NotNull
     @Min(10)
     @Max(120)
-    @JsonProperty("age")  // Явно указываем имя поля
+    @JsonProperty("age")
     private Integer age;
 }

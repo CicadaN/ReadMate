@@ -1,7 +1,6 @@
 package app.ReadMate.config;
 
 import app.ReadMate.service.CustomUserDetailsService;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
@@ -20,8 +19,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
-import org.springframework.security.web.csrf.CsrfFilter;
-import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.OrRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
@@ -52,7 +49,10 @@ public class SecurityConfig {
             new AntPathRequestMatcher("/proxy/**"),
             new AntPathRequestMatcher("/assets/**"),
             new AntPathRequestMatcher("/static/css/**"),
+            new AntPathRequestMatcher("/books/**"),
+            new AntPathRequestMatcher("/books-page/**"),
             new AntPathRequestMatcher("/css/**")
+
     );
 
 //    @Bean

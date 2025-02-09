@@ -44,7 +44,6 @@ public class UserPageController {
         String username = principal.getName();
         UserResponseDto updatedUser = userService.update(userUpdateDto, username);
 
-        // сообщение о успехе (опционально)
         redirectAttributes.addFlashAttribute("successMessage", "Profile updated successfully!");
 
         return "redirect:/profile";

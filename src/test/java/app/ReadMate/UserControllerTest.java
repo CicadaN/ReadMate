@@ -22,7 +22,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import org.junit.jupiter.api.extension.ExtendWith;
 
-@ExtendWith(SpringExtension.class) // аналог @RunWith(SpringRunner.class) в JUnit 5
+@ExtendWith(SpringExtension.class)
 @SpringBootTest
 @AutoConfigureMockMvc
 public class UserControllerTest {
@@ -94,21 +94,18 @@ public class UserControllerTest {
         dto.setPassword("testpass");
         dto.setEmail("test@email.com");
         dto.setAge(25);
-        userService.save(dto);  // Сохраняем пользователя
+        userService.save(dto);
 
-        // Отправляем PUT-запрос с обновлёнными данными
         mvc.perform(put("/profile")
                         .with(csrf())  // Для безопасности
-                        .param("username", "admin")  // Не меняем имя, оно фиксированное
-                        .param("email", "newemail@email.com")  // Обновляем email
-                        .param("age", "30"))  // Обновляем возраст
-                .andExpect(status().is3xxRedirection())  // Ожидаем редирект
+                        .param("username", "admin")
+                        .param("email", "newemail@email.com")
+                        .param("age", "30"))
+                .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/profile"));
 
-        // Загружаем пользователя после обновления
         UserResponseDto updatedUser = userService.findByUsername("admin");
 
-        // Проверяем, что данные действительно изменились
         assertNotNull(updatedUser);
         assertEquals("newemail@email.com", updatedUser.getEmail());
         assertEquals(30, updatedUser.getAge());

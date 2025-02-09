@@ -17,29 +17,23 @@ public class BookPageController {
     private final BookService bookService;
 
     // Страница со списком книг
-    @GetMapping("/books-page")
+    @GetMapping("/books_details")
     public String showBooks(Model model) {
-        // Загружаем все книги в виде DTO (BookRequestDTO)
         List<BookRequestDTO> allBooks = bookService.getAllBooks();
 
-        // Кладём их в модель
         model.addAttribute("books", allBooks);
         model.addAttribute("title", "Список книг");
 
-        // Говорим layout'у: использовать дочерний шаблон "books" (books.html)
         model.addAttribute("childTemplate", "books");
 
-        // Возвращаем "layout" — ваш главный шаблон
         return "layout";
     }
 
     // Страница детальной информации о книге
-    @GetMapping("/books-page/{id}")
+    @GetMapping("/books_details/{id}")
     public String showBookDetails(@PathVariable Long id, Model model) {
-        // Загружаем конкретную книгу как DTO
         BookRequestDTO bookDTO = bookService.getBookByIdDTO(id);
 
-        // Кладём DTO в модель
         model.addAttribute("book", bookDTO);
         model.addAttribute("title", "Информация о книге");
         model.addAttribute("childTemplate", "bookDetails");

@@ -8,7 +8,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -21,7 +20,6 @@ import org.springframework.security.web.context.HttpSessionSecurityContextReposi
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
-import java.util.Map;
 
 @RestController
 @AllArgsConstructor
